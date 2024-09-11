@@ -1,19 +1,22 @@
-import torch 
+import tensorflow as tf
+import numpy as np
 
-# Create a bench mark for sparse and dense matrix multiplication
-def bench_nn_torch():
+# Create a benchmark for sparse and dense matrix multiplication
+def bench_nn_tensorflow():
     # Create a dense matrix
-    dense = torch.randn(1000, 1000)
+    dense = tf.random.normal((1000, 1000))
     # Create a sparse matrix
-    sparse = torch.sparse_coo_tensor(indices=torch.randint(0, 1000, (2, 1000)), values=torch.randn(1000), size=(1000, 1000))
+    indices = np.random.randint(0, 1000, (2, 1000))
+    values = np.random.randn(1000)
+    sparse = tf.sparse.SparseTensor(indices=indices, values=values, dense_shape=(1000, 1000))
 
     # Benchmark dense matrix multiplication
     for _ in range(100):
-        torch.matmul(dense, dense)
+        tf.matmul(dense, dense)
 
     # Benchmark sparse matrix multiplication
     for _ in range(100):
-        torch.sparse.mm(sparse, dense)
+        tf.sparse.sparse_dense_matmul(sparse, dense)
 
 if __name__ == '__main__':
-    bench_nn_torch()
+    bench_nn_tensorflow()
