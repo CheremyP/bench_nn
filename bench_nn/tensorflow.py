@@ -3,6 +3,10 @@ import numpy as np
 
 # Create a benchmark for sparse and dense matrix multiplication
 def bench_nn_tensorflow():
+    """
+    This function benchmarks the performance of sparse and dense matrix multiplication using tensorflow.
+    """
+    
     # Create a dense matrix
     dense = tf.random.normal((1000, 1000))
     # Create a sparse matrix

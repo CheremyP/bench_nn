@@ -1,35 +1,24 @@
-import jax.numpy as jnp
-from jax import random
-from jax.scipy import sparse
-import time
+from numpy import random, sparse, dot, matmul
 
-# Create a benchmark for sparse and dense matrix multiplication
-def bench_nn_jax():
-    # Create a random key for reproducibility
-    key = random.PRNGKey(0)
+def bench_nn_numpy():
+    """
+    This function benchmarks the performance of sparse and dense matrix multiplication using numpy.
+    """
 
     # Create a dense matrix
-    dense = random.normal(key, (1000, 1000))
-
+    dense = random.randn(1000, 1000)
     # Create a sparse matrix
-    key, subkey = random.split(key)
-    indices = random.randint(subkey, (2, 1000), 0, 1000)
-    values = random.normal(subkey, (1000,))
-    sparse_matrix = sparse.coo_matrix((values, (indices[0], indices[1])), shape=(1000, 1000))
+    indices = random.randint(0, 1000, (2, 1000))
+    values = random.randn(1000)
+    sparse_matrix = sparse.coo_matrix((values, indices), shape=(1000, 1000))
 
     # Benchmark dense matrix multiplication
-    start_time = time.time()
     for _ in range(100):
-        jnp.matmul(dense, dense)
-    dense_time = time.time() - start_time
-    print(f'Dense matrix multiplication time: {dense_time:.4f} seconds')
+        matmul(dense, dense)
 
-    # Benchmark sparse matrix multiplication
-    start_time = time.time()
+    # Benchmark sparse with sparse matrix multiplication
     for _ in range(100):
-        sparse_matrix.dot(dense)
-    sparse_time = time.time() - start_time
-    print(f'Sparse matrix multiplication time: {sparse_time:.4f} seconds')
-
+        dot(sparse_matrix, sparse_matrix)
+        
 if __name__ == '__main__':
-    bench_nn_jax()
+    bench_nn_numpy()
