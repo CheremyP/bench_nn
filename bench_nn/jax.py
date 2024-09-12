@@ -1,7 +1,7 @@
 import time
-import jax.numpy as jnp
-from jax import random
-from jax.scipy.sparse import coo_matrix
+import jax as jnp
+from jax import random, matmul
+from scipy.sparse import coo_matrix
 
 # Constants
 MATRIX_SIZE = (1000, 1000)
@@ -26,7 +26,7 @@ def bench_nn_jax():
     # Benchmark dense matrix multiplication
     start_time = time.time()
     for _ in range(NUM_ITERATIONS):
-        jnp.matmul(dense_matrix, dense_matrix)
+        matmul(dense_matrix, dense_matrix)
     dense_time = time.time() - start_time
     print(f'Dense matrix multiplication time: {dense_time:.4f} seconds')
 
